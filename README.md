@@ -1,16 +1,14 @@
 # translator_gpt
 
-A new Flutter project.
+Projetinho em flutter que utiliza a api do OPENAI para fazer traduções. 
 
-## Getting Started
+# API KEY
 
-This project is a starting point for a Flutter application.
+Você vai precisar criar uma api key neste site
+https://platform.openai.com/account/api-keys
+e adicionar no arquivo main.dart
 
-A few resources to get you started if this is your first Flutter project:
+# settings
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Utilize a versão do flutter 3.10.5 em sua máquina
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
