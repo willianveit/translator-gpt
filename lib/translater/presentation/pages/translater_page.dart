@@ -136,7 +136,7 @@ class _TranslaterPageState extends State<TranslaterPage> {
                           });
                           getPrompt(_textEditingController.text);
                         },
-                        child: const Text('Explanations'),
+                        child: const Text('Explanation'),
                       ),
                       CheckboxMenuButton(
                         value: giveExamples,
