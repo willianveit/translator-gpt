@@ -10,6 +10,7 @@ void main() {
   // https://platform.openai.com/account/api-keys
   OpenAI.apiKey = 'sua api-key';
   OpenAI.organization = "sua organização";
+
   runApp(
     ModularApp(
       module: AppModule(),
