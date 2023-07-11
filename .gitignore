@@ -46,3 +46,7 @@ app.*.map.json
 firebase.json
 translator-gpt-keystore.jks
 .firebase/hosting.YnVpbGRcd2Vi.cache
+macos/Flutter/GeneratedPluginRegistrant.swift
+.gitignore
+macos/Flutter/ephemeral/Flutter-Generated.xcconfig
+macos/Flutter/ephemeral/flutter_export_environment.sh
