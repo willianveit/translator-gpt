@@ -42,3 +42,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+.firebaserc
+%userprofile%translator-gpt-keystore.jks
+firebase.json
+translator-gpt-keystore.jks
+.firebase/hosting.YnVpbGRcd2Vi.cache

@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'translater/controllers/translater_bloc.dart';
+import 'translater/presentation/pages/privacy_policy_page.dart';
 import 'translater/presentation/pages/translater_page.dart';
 
 class AppModule extends Module {
@@ -13,6 +14,10 @@ class AppModule extends Module {
         ChildRoute(
           Modular.initialRoute,
           child: (_, __) => TranslaterPage(),
+        ),
+        ChildRoute(
+          '/privacy-policy',
+          child: (_, __) => PrivacyPolicyPage(),
         ),
       ];
 }

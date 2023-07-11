@@ -1,3 +1,3 @@
 class AppStrings {
-  static const String appName = 'Gringow';
+  static const String appName = 'Translator GPT';
 }

@@ -1,5 +1,5 @@
 name: translator_gpt
-description: A new Flutter project.
+description: Translator that uses artificial intelligence.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -16,10 +16,22 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  icons_launcher: 2.1.3
   flutter_test:
     sdk: flutter
-
+  flutter_web_plugins:
+    sdk: flutter
   flutter_lints: ^2.0.0
+
+icons_launcher:
+  image_path: "assets/ic_logo_border.jpg"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+    web:
+      enable: true
 
 flutter:
   uses-material-design: true

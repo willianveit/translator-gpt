@@ -1,4 +1,4 @@
-package com.example.translator_gpt
+package br.com.willian.veit.translatorgpt
 
 import io.flutter.embedding.android.FlutterActivity
 

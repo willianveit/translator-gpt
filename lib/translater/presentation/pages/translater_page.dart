@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:translator_gpt/translater/presentation/modals/show_modal_g.dart';
 import '../../controllers/translater_bloc.dart';
 import '../../enums/status.dart';
-import '../language_options_panel.dart';
 import '../widgets/divider_g.dart';
 
 class TranslaterPage extends StatefulWidget {
@@ -16,9 +16,37 @@ class TranslaterPage extends StatefulWidget {
 class _TranslaterPageState extends State<TranslaterPage> {
   final cubit = Modular.get<TranslaterBloc>();
 
-  final _textEditingController = TextEditingController();
+  TextEditingController _textEditingControllerUserText = TextEditingController();
+  TextEditingController _textEditingControllerLanguages = TextEditingController();
+  TextEditingController _textEditingControllerPrompt = TextEditingController();
   bool giveExplanation = true;
   bool giveExamples = true;
+
+  String getComplement() {
+    if (giveExplanation && giveExamples) {
+      return '\nGive an explanation and give examples.';
+    } else if (giveExplanation) {
+      return '\nGive an explanation.';
+    } else if (giveExamples) {
+      return '\nGive examples.';
+    } else {
+      return '';
+    }
+  }
+
+  String getPrompt() {
+    return _textEditingControllerPrompt.text =
+        'Translate "${_textEditingControllerUserText.text}" to ${_textEditingControllerLanguages.text}. ${getComplement()}';
+  }
+
+  @override
+  void initState() {
+    _textEditingControllerUserText = TextEditingController();
+    _textEditingControllerLanguages = TextEditingController(text: 'english and spanish');
+    _textEditingControllerPrompt = TextEditingController(text: getPrompt());
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +61,15 @@ class _TranslaterPageState extends State<TranslaterPage> {
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.primary,
             centerTitle: true,
+            leadingWidth: 70,
+            leading: TextButton(
+                onPressed: () => Modular.to.pushNamed('/privacy-policy'),
+                child: const Icon(
+                  Icons.privacy_tip_outlined,
+                  color: Colors.white,
+                )),
             title: const Text(
-              'Gringow',
+              'Translator GPT',
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -45,26 +80,100 @@ class _TranslaterPageState extends State<TranslaterPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  LanguageOptionsPanel(
-                    firstLanguageSelected: state.firstLanguageSelected,
-                    secondLanguageSelected: state.secondLanguageSelected,
-                    onChangedFirstLanguage: cubit.onChangedFirstLanguage,
-                    onChangedsecondLanguage: cubit.onChangedsecondLanguage,
-                    onTapSwitchLanguage: cubit.onTapSwitchLanguage,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                'Any (auto detect)',
+                                style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                    ),
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.compare_arrows_rounded,
+                          ),
+                          Expanded(
+                              child: TextFormField(
+                            textAlignVertical: TextAlignVertical.center,
+                            textAlign: TextAlign.center,
+                            controller: _textEditingControllerLanguages,
+                            onChanged: (_) => getPrompt(),
+                            style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 18,
+                                ),
+                            decoration: const InputDecoration.collapsed(
+                              hintText: '',
+                            ),
+                          )),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      const DividerG(),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: TextFormField(
-                      controller: _textEditingController,
+                      controller: _textEditingControllerUserText,
                       maxLines: 4,
-                      maxLength: 100,
+                      maxLength: 500,
                       decoration: const InputDecoration.collapsed(
-                        hintText: 'Digite o texto...',
+                        hintText: 'Enter the text...',
                       ),
+                      onChanged: (text) => getPrompt(),
                     ),
                   ),
                   const DividerG(),
-                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      CheckboxMenuButton(
+                        value: giveExplanation,
+                        onChanged: (value) {
+                          setState(() {
+                            giveExplanation = value ?? false;
+                          });
+                          getPrompt();
+                        },
+                        child: const Text('Explanation'),
+                      ),
+                      CheckboxMenuButton(
+                        value: giveExamples,
+                        onChanged: (value) {
+                          setState(() {
+                            giveExamples = value ?? false;
+                          });
+                          getPrompt();
+                        },
+                        child: const Text('Examples'),
+                      ),
+                    ],
+                  ),
+                  const DividerG(),
+                  Container(
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: TextFormField(
+                      controller: _textEditingControllerPrompt,
+                      expands: false,
+                      maxLines: null,
+                      maxLength: null,
+                      style: const TextStyle(
+                        height: 1.8,
+                      ),
+                      decoration: const InputDecoration.collapsed(
+                        hintText: '',
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                       top: 12,
@@ -84,16 +193,24 @@ class _TranslaterPageState extends State<TranslaterPage> {
                       ),
                       onPressed: () {
                         FocusScope.of(context).requestFocus(FocusNode());
-                        cubit.translate(
-                          text: _textEditingController.text,
-                          firstLanguage: state.firstLanguageSelected,
-                          secondLanguage: state.secondLanguageSelected,
-                          giveExamples: giveExamples,
-                          giveExplanation: giveExplanation,
-                        );
+                        if (_textEditingControllerUserText.text.isEmpty) {
+                          showModalG(
+                            context,
+                            child: Center(
+                              child: Text(
+                                '\nDigite algum texto para traduzir\n\nEnter some text to translate\n\nIntroduce un texto para traducir\n\n',
+                                style: Theme.of(context).textTheme.headlineSmall,
+                              ),
+                            ),
+                          );
+                        } else {
+                          cubit.translate(
+                            text: _textEditingControllerPrompt.text,
+                          );
+                        }
                       },
                       label: const Text(
-                        'Traduzir',
+                        'Translate',
                         style: TextStyle(
                           color: Colors.white,
                         ),
