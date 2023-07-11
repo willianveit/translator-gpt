@@ -16,7 +16,7 @@ class TranslaterPage extends StatefulWidget {
 class _TranslaterPageState extends State<TranslaterPage> {
   final cubit = Modular.get<TranslaterBloc>();
 
-  TextEditingController _textEditingController = TextEditingController();
+  TextEditingController _textEditingControllerUserText = TextEditingController();
   TextEditingController _textEditingControllerLanguages = TextEditingController();
   TextEditingController _textEditingControllerPrompt = TextEditingController();
   bool giveExplanation = true;
@@ -34,16 +34,16 @@ class _TranslaterPageState extends State<TranslaterPage> {
     }
   }
 
-  String getPrompt(String text) {
+  String getPrompt() {
     return _textEditingControllerPrompt.text =
-        'Translate "$text" to ${_textEditingControllerLanguages.text}. ${getComplement()}';
+        'Translate "${_textEditingControllerUserText.text}" to ${_textEditingControllerLanguages.text}. ${getComplement()}';
   }
 
   @override
   void initState() {
-    _textEditingController = TextEditingController();
+    _textEditingControllerUserText = TextEditingController();
     _textEditingControllerLanguages = TextEditingController(text: 'english and spanish');
-    _textEditingControllerPrompt = TextEditingController(text: getPrompt(''));
+    _textEditingControllerPrompt = TextEditingController(text: getPrompt());
 
     super.initState();
   }
@@ -61,6 +61,13 @@ class _TranslaterPageState extends State<TranslaterPage> {
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.primary,
             centerTitle: true,
+            leadingWidth: 70,
+            leading: TextButton(
+                onPressed: () => Modular.to.pushNamed('/privacy-policy'),
+                child: const Icon(
+                  Icons.privacy_tip_outlined,
+                  color: Colors.white,
+                )),
             title: const Text(
               'Translator GPT',
               style: TextStyle(
@@ -98,7 +105,7 @@ class _TranslaterPageState extends State<TranslaterPage> {
                             textAlignVertical: TextAlignVertical.center,
                             textAlign: TextAlign.center,
                             controller: _textEditingControllerLanguages,
-                            onChanged: (text) => getPrompt(text),
+                            onChanged: (_) => getPrompt(),
                             style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                   fontSize: 18,
@@ -116,13 +123,13 @@ class _TranslaterPageState extends State<TranslaterPage> {
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: TextFormField(
-                      controller: _textEditingController,
+                      controller: _textEditingControllerUserText,
                       maxLines: 4,
                       maxLength: 500,
                       decoration: const InputDecoration.collapsed(
                         hintText: 'Enter the text...',
                       ),
-                      onChanged: (text) => getPrompt(text),
+                      onChanged: (text) => getPrompt(),
                     ),
                   ),
                   const DividerG(),
@@ -134,7 +141,7 @@ class _TranslaterPageState extends State<TranslaterPage> {
                           setState(() {
                             giveExplanation = value ?? false;
                           });
-                          getPrompt(_textEditingController.text);
+                          getPrompt();
                         },
                         child: const Text('Explanation'),
                       ),
@@ -144,7 +151,7 @@ class _TranslaterPageState extends State<TranslaterPage> {
                           setState(() {
                             giveExamples = value ?? false;
                           });
-                          getPrompt(_textEditingController.text);
+                          getPrompt();
                         },
                         child: const Text('Examples'),
                       ),
@@ -186,7 +193,7 @@ class _TranslaterPageState extends State<TranslaterPage> {
                       ),
                       onPressed: () {
                         FocusScope.of(context).requestFocus(FocusNode());
-                        if (_textEditingController.text.isEmpty) {
+                        if (_textEditingControllerUserText.text.isEmpty) {
                           showModalG(
                             context,
                             child: Center(
