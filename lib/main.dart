@@ -9,8 +9,8 @@ import 'app_widget.dart';
 void main() {
   // Crie sua api-key em
   // https://platform.openai.com/account/api-keys
-  OpenAI.apiKey = 'sua api-key';
-  OpenAI.organization = "sua organização";
+  // OpenAI.apiKey = 'sua api-key';
+  // OpenAI.organization = "sua organização";
 
   setUrlStrategy(PathUrlStrategy());
 

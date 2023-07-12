@@ -92,7 +92,7 @@ class _TranslaterPageState extends State<TranslaterPage> {
                                 'Any (auto detect)',
                                 style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
                                       color: Colors.black,
-                                      fontSize: 18,
+                                      fontSize: 16,
                                     ),
                               ),
                             ),
@@ -108,7 +108,7 @@ class _TranslaterPageState extends State<TranslaterPage> {
                             onChanged: (_) => getPrompt(),
                             style: Theme.of(context).primaryTextTheme.titleLarge!.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                 ),
                             decoration: const InputDecoration.collapsed(
                               hintText: '',
@@ -158,22 +158,6 @@ class _TranslaterPageState extends State<TranslaterPage> {
                     ],
                   ),
                   const DividerG(),
-                  Container(
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    child: TextFormField(
-                      controller: _textEditingControllerPrompt,
-                      expands: false,
-                      maxLines: null,
-                      maxLength: null,
-                      style: const TextStyle(
-                        height: 1.8,
-                      ),
-                      decoration: const InputDecoration.collapsed(
-                        hintText: '',
-                      ),
-                    ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                       top: 12,
